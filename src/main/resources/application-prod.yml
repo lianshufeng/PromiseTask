@@ -1,0 +1,8 @@
+#服务器的web端口
+server:
+  port: 8080
+
+
+#调试或者输出日志
+logging:
+  file: logs/promisetask.log

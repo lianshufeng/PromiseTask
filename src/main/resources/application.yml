@@ -1,3 +1,4 @@
-#·şÎñÆ÷µÄweb¶Ë¿Ú
-server:
-  port: 8080
+# å½“å‰è¯»å–é…ç½®æ–‡ä»¶çš„ç±»å‹
+spring:
+  profiles:
+    active: dev
