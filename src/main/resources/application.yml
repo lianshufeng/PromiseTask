@@ -1,0 +1,3 @@
+#服务器的web端口
+server:
+  port: 8080
