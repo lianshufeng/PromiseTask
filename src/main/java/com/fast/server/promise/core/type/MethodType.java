@@ -5,5 +5,6 @@ package com.fast.server.promise.core.type;
  */
 public enum MethodType {
     Post,
-    Get
+    Get,
+    Json
 }

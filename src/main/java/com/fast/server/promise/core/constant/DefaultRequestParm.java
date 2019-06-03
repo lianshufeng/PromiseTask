@@ -19,17 +19,18 @@ public class DefaultRequestParm {
         RequestParmModel parmModel = new RequestParmModel();
         // http
         HttpModel http = new HttpModel();
-        http.setMethodType(MethodType.Get);
+        http.setMethod(MethodType.Get);
         http.setHeader(new HashMap<String, Object>() {{
             put("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36");
         }});
+        http.setCharset("UTF-8");
         parmModel.setHttp(http);
 
         //error
         parmModel.setError(new ErrorModel(3, 3000l));
 
-        //一小时
-        parmModel.setExecuteTime(1000 * 60 * 60l);
+        //十分钟
+        parmModel.setExecuteTime(1000 * 60 * 10l);
 
 
         return parmModel;

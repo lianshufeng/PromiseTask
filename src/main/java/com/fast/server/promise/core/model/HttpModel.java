@@ -28,7 +28,7 @@ public class HttpModel {
     /**
      * 网络请求方式
      */
-    private MethodType methodType;
+    private MethodType method;
 
 
     /**
@@ -40,6 +40,12 @@ public class HttpModel {
     /**
      * 请求体，仅为post生效
      */
-    private Map<String, Object> body;
+    private Object body;
+
+
+    /**
+     * 请求编码
+     */
+    private String charset;
 
 }

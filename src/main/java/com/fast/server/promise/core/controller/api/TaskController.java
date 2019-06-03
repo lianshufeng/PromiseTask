@@ -5,6 +5,7 @@ import com.fast.server.promise.core.model.*;
 import com.fast.server.promise.core.service.TaskService;
 import com.fast.server.promise.core.util.BeanUtil;
 import com.fast.server.promise.core.util.JsonUtil;
+import com.fast.server.promise.core.util.RequestParmUtil;
 import lombok.extern.java.Log;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +33,8 @@ public class TaskController {
     @RequestMapping("add")
     public InvokerResult<ResponseStatusModel> add(@RequestBody @Validated RequestParmModel userModel) throws Exception {
         log("add", userModel);
-        //默认参数
-        RequestParmModel parm = DefaultRequestParm.get();
-        BeanUtils.copyProperties(userModel, parm, BeanUtil.getNullPropertyNames(userModel));
-
-
-        setRequestModel(userModel, parm, "http");
-        setRequestModel(userModel, parm, "error");
-
-
         //添加任务
-        return InvokerResult.notNull(this.taskService.add(parm));
+        return InvokerResult.notNull(this.taskService.add( RequestParmUtil.build(userModel)));
     }
 
 
@@ -84,25 +76,7 @@ public class TaskController {
     }
 
 
-    /**
-     * 设置请求模型
-     *
-     * @param varName
-     */
-    private void setRequestModel(RequestParmModel user, RequestParmModel system, String varName) throws Exception {
-        //取出需要拷贝的用户与系统的属性
-        Object userMoudle = BeanUtil.get(user, varName);
-        Object systemMoudle = BeanUtil.get(DefaultRequestParm.get(), varName);
 
-        //复制且过滤为null的用户数据
-        if (userMoudle != null) {
-            BeanUtils.copyProperties(userMoudle, systemMoudle, BeanUtil.getNullPropertyNames(userMoudle));
-        }
-
-
-        //设置到系统数据中
-        BeanUtil.set(system, varName, systemMoudle);
-    }
 
 
     /**
