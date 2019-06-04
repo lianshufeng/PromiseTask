@@ -8,3 +8,20 @@ logging:
   file: logs/promisetask.log
 debug: true
 #trace: true
+
+
+
+
+### 配置数据库的连接方式
+spring:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:promisetask.db
+    username:
+    password:
+  ### sqlite需要自己配置连接方式
+  jpa:
+    database-platform: com.fast.server.promise.core.helper.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
