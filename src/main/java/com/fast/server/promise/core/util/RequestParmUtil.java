@@ -20,7 +20,7 @@ public class RequestParmUtil {
 
 
         setRequestModel(userParm, parm, "http");
-        setRequestModel(userParm, parm, "error");
+        setRequestModel(userParm, parm, "errorTry");
 
         return parm;
     }

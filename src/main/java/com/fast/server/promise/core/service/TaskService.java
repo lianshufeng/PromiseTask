@@ -26,13 +26,15 @@ public class TaskService {
      *
      * @return
      */
-    public ResponseStatusModel add(RequestParmModel parm) {
-        String id = UUID.randomUUID().toString().replaceAll("-", "");
+    public RequestParmModel put(RequestParmModel parm) {
+        if (parm.getId() == null) {
+            parm.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+        }
         TaskModel taskModel = new TaskModel();
         taskModel.setRecordTime(TimeUtil.getTime());
         BeanUtils.copyProperties(parm, taskModel);
-        this._tasks.put(id, taskModel);
-        return getResponseModel(id);
+        this._tasks.put(parm.getId(), taskModel);
+        return taskModel;
     }
 
 
@@ -95,7 +97,7 @@ public class TaskService {
         if (taskModel == null) {
             return null;
         }
-        return ResponseStatusModel.builder().id(id).nextExecuteTime(getNextTime(taskModel)).build();
+        return ResponseStatusModel.builder().nextExecuteTime(getNextTime(taskModel)).build();
     }
 
 

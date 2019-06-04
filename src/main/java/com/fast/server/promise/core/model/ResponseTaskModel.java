@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseTaskModel {
+public class ResponseTaskModel extends TaskModel {
 
-
-    //任务模型
-    private TaskModel task;
 
     // 响应的model
     private ResponseStatusModel status;

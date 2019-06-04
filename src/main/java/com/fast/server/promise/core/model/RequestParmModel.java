@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 
 /**
  * 请求的模型
@@ -18,6 +19,12 @@ import javax.validation.constraints.Max;
 @Builder
 @Validated
 public class RequestParmModel {
+
+
+    /**
+     * 任务序列化的id,不能为空
+     */
+    private String id;
 
 
     /**
@@ -38,7 +45,7 @@ public class RequestParmModel {
      * 错误模型
      */
     @Valid
-    private ErrorModel error;
+    private ErrorTryModel errorTry;
 
 
 }

@@ -11,11 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResponseStatusModel {
 
-    /**
-     * 任务id
-     */
-    private String id;
-
 
     /**
      * 下次执行任务的时间

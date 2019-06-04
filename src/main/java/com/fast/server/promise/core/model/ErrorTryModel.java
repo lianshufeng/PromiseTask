@@ -13,7 +13,7 @@ import javax.validation.constraints.Max;
 @NoArgsConstructor
 @Builder
 @Validated
-public class ErrorModel {
+public class ErrorTryModel {
 
     /**
      * 尝试次数

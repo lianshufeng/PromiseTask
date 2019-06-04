@@ -1,11 +1,12 @@
 package com.fast.server.promise.core.constant;
 
-import com.fast.server.promise.core.model.ErrorModel;
+import com.fast.server.promise.core.model.ErrorTryModel;
 import com.fast.server.promise.core.model.HttpModel;
 import com.fast.server.promise.core.model.RequestParmModel;
 import com.fast.server.promise.core.type.MethodType;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class DefaultRequestParm {
 
@@ -17,6 +18,7 @@ public class DefaultRequestParm {
      */
     public static RequestParmModel get() {
         RequestParmModel parmModel = new RequestParmModel();
+
         // http
         HttpModel http = new HttpModel();
         http.setMethod(MethodType.Get);
@@ -27,7 +29,7 @@ public class DefaultRequestParm {
         parmModel.setHttp(http);
 
         //error
-        parmModel.setError(new ErrorModel(3, 3000l));
+        parmModel.setErrorTry(new ErrorTryModel(3, 3000l));
 
         //十分钟
         parmModel.setExecuteTime(1000 * 60 * 10l);
