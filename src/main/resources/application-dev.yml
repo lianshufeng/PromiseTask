@@ -21,7 +21,8 @@ spring:
     password:
   ### sqlite需要自己配置连接方式
   jpa:
-    database-platform: com.fast.server.promise.core.helper.SQLiteDialect
+    database-platform: com.fast.server.promise.core.dialect.SQLiteDialect
     hibernate:
       ddl-auto: update
     show-sql: true
+

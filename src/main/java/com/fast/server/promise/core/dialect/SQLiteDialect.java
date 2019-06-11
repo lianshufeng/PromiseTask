@@ -1,4 +1,4 @@
-package com.fast.server.promise.core.helper;
+package com.fast.server.promise.core.dialect;
 
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.function.SQLFunctionTemplate;
