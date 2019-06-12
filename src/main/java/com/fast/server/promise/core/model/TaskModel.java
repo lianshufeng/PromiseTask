@@ -12,7 +12,7 @@ public class TaskModel extends RequestParmModel {
     /**
      * 系统时间
      */
-    private long recordTime;
+    private long heartbeatTime;
 
 
 }

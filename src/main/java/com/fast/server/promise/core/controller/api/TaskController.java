@@ -40,7 +40,7 @@ public class TaskController {
      * @return
      */
     @RequestMapping("query")
-    public InvokerResult<ResponseTaskModel> query(String id) {
+    public InvokerResult<ResponseTaskModel> query(String id) throws Exception {
         TaskModel taskModel = this.taskService.query(id);
         if (taskModel == null) {
             return InvokerResult.success(null);

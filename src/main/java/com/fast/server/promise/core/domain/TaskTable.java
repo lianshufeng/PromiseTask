@@ -1,8 +1,6 @@
 package com.fast.server.promise.core.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,10 +9,12 @@ import javax.persistence.*;
  */
 
 @Data
+@Builder
 @Entity
-@Table(name = "taskTable", indexes = {@Index(name = "taskId", columnList = "taskId"), @Index(name = "taskTable_createTime", columnList = "createTime"), @Index(name = "taskTable_updateTime", columnList = "updateTime")})
+@Table(name = "taskTable", indexes = {@Index(name = "taskId", columnList = "taskId"), @Index(name = "taskTable_createTime", columnList = "createTime"), @Index(name = "taskTable_updateTime", columnList = "updateTime"), @Index(name = "taskTable_executeTime", columnList = "executeTime"), @Index(name = "taskTable_heartbeatTime", columnList = "heartbeatTime")})
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class TaskTable extends SuperEntity {
 
     @Column(unique = true, nullable = true)
@@ -26,6 +26,13 @@ public class TaskTable extends SuperEntity {
      */
     @Column(unique = false, nullable = true)
     private Long executeTime;
+
+
+    /**
+     * 心跳记录时间
+     */
+    @Column(unique = false, nullable = true)
+    private Long heartbeatTime;
 
 
     /**

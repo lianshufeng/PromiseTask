@@ -4,22 +4,25 @@ import com.fast.server.promise.core.type.MethodType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import java.util.Map;
 
-@Data
+
+
+
+
 @Entity
 @Table(name = "httpTable", indexes = {@Index(name = "httpTable_createTime", columnList = "createTime"), @Index(name = "httpTable_updateTime", columnList = "updateTime")})
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class HttpTable extends SuperEntity {
 
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private TaskTable taskTable;
-
 
 
     /**

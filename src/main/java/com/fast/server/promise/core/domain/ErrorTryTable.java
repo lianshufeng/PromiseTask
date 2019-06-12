@@ -4,6 +4,7 @@ package com.fast.server.promise.core.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -12,10 +13,11 @@ import javax.persistence.*;
 @Table(name = "errorTryTable", indexes = {@Index(name = "errorTryTable_createTime", columnList = "createTime"), @Index(name = "errorTryTable_updateTime", columnList = "updateTime")})
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ErrorTryTable extends SuperEntity {
 
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private TaskTable taskTable;
 
 
