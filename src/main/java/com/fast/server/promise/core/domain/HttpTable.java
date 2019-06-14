@@ -5,15 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import javax.persistence.*;
-
-
-
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
-@Entity
-@Table(name = "httpTable", indexes = {@Index(name = "httpTable_createTime", columnList = "createTime"), @Index(name = "httpTable_updateTime", columnList = "updateTime")})
+@Document
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,42 +18,42 @@ import javax.persistence.*;
 public class HttpTable extends SuperEntity {
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @DBRef(lazy = true)
     private TaskTable taskTable;
 
 
     /**
      * Url地址
      */
-    @Column
+    @Indexed
     private String url;
 
 
     /**
      * 网络请求方式
      */
-    @Column
+    @Indexed
     private MethodType method;
 
 
     /**
      * 请求头
      */
-    @Column
+    @Indexed
     private String header;
 
 
     /**
      * 请求体，仅为post生效
      */
-    @Column
+    @Indexed
     private String body;
 
 
     /**
      * 请求编码
      */
-    @Column
+    @Indexed
     private String charset;
 
 }

@@ -2,11 +2,12 @@ package com.fast.server.promise.core.domain;
 
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.mongodb.core.index.Indexed;
 
-import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
@@ -21,15 +22,27 @@ import java.io.Serializable;
 @Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class SuperEntity extends AbstractPersistable<Long> implements Serializable {
+public abstract class SuperEntity extends AbstractPersistable<String> implements Serializable {
 
 
+    @Id
+    private String id;
+
+
+    /**
+     * 创建时间
+     */
+
+    @Indexed
     @CreatedDate
-    @Column(name = "createTime")
     private Long createTime;
 
+    /**
+     * 修改时间
+     */
+    @Indexed
     @LastModifiedDate
-    @Column(name = "updateTime")
     private Long updateTime;
+
 
 }

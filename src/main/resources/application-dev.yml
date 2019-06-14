@@ -6,23 +6,33 @@ server:
 #调试或者输出日志
 logging:
   file: logs/promisetask.log
-debug: true
+debug: false
 #trace: true
 
 
 
 
-### 配置数据库的连接方式
 spring:
-  datasource:
-    driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:promisetask.db
-    username:
-    password:
-  ### sqlite需要自己配置连接方式
-  jpa:
-    database-platform: com.fast.server.promise.core.dialect.SQLiteDialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+  data:
+    mongodb:
+      database: PromiseTask
+#      authentication-database: admin
+      host: 127.0.0.1:27017
+#      username: admin
+#      password: 687mongo2019
+
+
+### 配置数据库的连接方式
+#spring:
+#  datasource:
+#    driver-class-name: org.sqlite.JDBC
+#    url: jdbc:sqlite:promisetask.db
+#    username:
+#    password:
+#  ### sqlite需要自己配置连接方式
+#  jpa:
+#    database-platform: com.fast.server.promise.core.dialect.SQLiteDialect
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: false
 

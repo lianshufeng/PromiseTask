@@ -2,6 +2,7 @@ package com.fast.server.promise.core.util;
 
 import com.fast.server.promise.core.model.HttpModel;
 import com.fast.server.promise.core.type.MethodType;
+import lombok.extern.java.Log;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -14,12 +15,27 @@ import org.apache.http.impl.client.HttpClients;
 import org.springframework.util.StreamUtils;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
 
+@Log
 public class HttpClientUtil {
+
+
+    /**
+     * 网络请求
+     *
+     * @param httpModel
+     * @param outputStream
+     * @return
+     */
+    public static int request(HttpModel httpModel, OutputStream outputStream) {
+
+        return -1;
+    }
 
 
     /**
@@ -48,17 +64,24 @@ public class HttpClientUtil {
         //开始请求
         CloseableHttpResponse response = httpclient.execute(requestBase);
         //转发请求头
-        for (Header header : response.getAllHeaders()) {
-            httpServletResponse.setHeader(header.getName(), header.getValue());
+        if (httpServletResponse != null) {
+            for (Header header : response.getAllHeaders()) {
+                httpServletResponse.setHeader(header.getName(), header.getValue());
+            }
         }
         //转发数据流
         OutputStream outputStream = null;
         InputStream inputStream = null;
 
         try {
-            outputStream = httpServletResponse.getOutputStream();
+            if (httpServletResponse != null) {
+                outputStream = httpServletResponse.getOutputStream();
+            } else {
+                outputStream = new ByteArrayOutputStream();
+            }
             inputStream = response.getEntity().getContent();
-            StreamUtils.copy(inputStream, outputStream);
+            int size = StreamUtils.copy(inputStream, outputStream);
+            log.info("requestUrl : " + httpModel.getUrl() + " , responseSize : " + size);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

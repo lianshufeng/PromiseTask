@@ -1,12 +1,10 @@
 package com.fast.server.promise.core.dao;
 
+import com.fast.server.promise.core.dao.extend.ErrorTryTableDaoExtend;
 import com.fast.server.promise.core.domain.ErrorTryTable;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ErrorTryTableDao extends JpaRepository<ErrorTryTable, Long> {
-
-
-
+public interface ErrorTryTableDao extends MongoRepository<ErrorTryTable, Long>, ErrorTryTableDaoExtend {
 
 
 }

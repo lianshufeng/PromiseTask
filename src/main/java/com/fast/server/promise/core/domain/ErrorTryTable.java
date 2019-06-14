@@ -5,32 +5,40 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import javax.persistence.*;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Entity
-@Table(name = "errorTryTable", indexes = {@Index(name = "errorTryTable_createTime", columnList = "createTime"), @Index(name = "errorTryTable_updateTime", columnList = "updateTime")})
+@Document
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class ErrorTryTable extends SuperEntity {
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @DBRef(lazy = true)
     private TaskTable taskTable;
 
 
     /**
      * 尝试次数
      */
-    @Column(unique = false, nullable = true)
+    @Indexed
     private Integer tryCount;
 
     /**
      * 延迟时间
      */
-    @Column(unique = false, nullable = true)
+    @Indexed
     private Long sleepTime;
+
+
+    /**
+     * 尝试任务时间
+     */
+    @Indexed
+    private Long tryTime;
+
 
 }

@@ -1,6 +1,7 @@
 package com.fast.server.promise.core.dao.extend;
 
 import com.fast.server.promise.core.domain.TaskTable;
+import com.fast.server.promise.core.type.TaskState;
 
 import java.util.List;
 
@@ -24,7 +25,25 @@ public interface TaskTableDaoExtend {
      *
      * @return
      */
-    List<TaskTable> findTimeOutTask();
+    List<TaskTable> findCanDoTask();
 
+
+    /**
+     * 设置任务状态
+     *
+     * @param taskId
+     * @param taskState
+     * @return
+     */
+    boolean setTaskState(String taskId, TaskState taskState);
+
+
+    /**
+     * 尝试执行任务
+     *
+     * @param taskId
+     * @return
+     */
+    boolean setTryDoWork(String taskId);
 
 }

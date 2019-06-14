@@ -6,33 +6,26 @@ import com.fast.server.promise.core.dao.TaskTableDao;
 import com.fast.server.promise.core.domain.ErrorTryTable;
 import com.fast.server.promise.core.domain.HttpTable;
 import com.fast.server.promise.core.domain.TaskTable;
+import com.fast.server.promise.core.helper.DBHelper;
+import com.fast.server.promise.core.helper.TaskHelper;
 import com.fast.server.promise.core.model.*;
 import com.fast.server.promise.core.type.MethodType;
+import com.fast.server.promise.core.type.TaskState;
 import com.fast.server.promise.core.util.JsonUtil;
-import com.fast.server.promise.core.util.TimeUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class TaskService {
 
 
-    /**
-     * 线程安全的队列
-     */
-    private Map<String, TaskModel> _tasks = new ConcurrentHashMap<>();
-
-
     @Autowired
     private TaskTableDao taskTableDao;
-
 
     @Autowired
     private HttpTableDao httpTableDao;
@@ -40,13 +33,19 @@ public class TaskService {
     @Autowired
     private ErrorTryTableDao errorTryTableDao;
 
+    @Autowired
+    private TaskHelper taskHelper;
+
+    @Autowired
+    private DBHelper dbHelper;
+
 
     /**
      * 添加任务
      *
      * @return
      */
-//    @Transactional
+//    
     public RequestParmModel put(RequestParmModel parm) {
         if (parm.getId() == null) {
             parm.setId(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -54,7 +53,7 @@ public class TaskService {
 
 
         TaskModel taskModel = new TaskModel();
-        taskModel.setHeartbeatTime(TimeUtil.getTime());
+        taskModel.setHeartbeatTime(this.dbHelper.getTime());
         BeanUtils.copyProperties(parm, taskModel);
 
 
@@ -67,6 +66,7 @@ public class TaskService {
             BeanUtils.copyProperties(taskModel, taskTable);
             taskTable.setTaskId(taskModel.getId());
             taskTable.setHeartbeatTime(taskModel.getHeartbeatTime());
+            taskTable.setTaskState(TaskState.Wait);
 
             this.taskTableDao.save(taskTable);
 
@@ -108,7 +108,7 @@ public class TaskService {
      * @param id
      * @return
      */
-    @Transactional
+
     public boolean remove(String id) {
         return this.taskTableDao.removeTaskTable(id);
     }
@@ -122,7 +122,6 @@ public class TaskService {
      */
 
     public TaskModel query(String id) {
-
         try {
             TaskTable taskTable = this.taskTableDao.findFirstByTaskId(id);
             if (taskTable != null) {
@@ -166,10 +165,31 @@ public class TaskService {
      *
      * @param id
      */
-    @Transactional
+
     public ResponseStatusModel heartbeat(String id) {
-        this.taskTableDao.setHeartbeatTime(id, TimeUtil.getTime());
+        this.taskTableDao.setHeartbeatTime(id, this.dbHelper.getTime());
         return getResponseModel(id);
+    }
+
+
+    /**
+     * 设置尝试执行任务
+     *
+     * @param taskId
+     */
+    public void setTryDoWork(String taskId) {
+        this.taskTableDao.setTryDoWork(taskId);
+    }
+
+
+    /**
+     * 修改任务的状态
+     *
+     * @param taskId
+     * @param taskState
+     */
+    public void setTaskState(String taskId, TaskState taskState) {
+        this.taskTableDao.setTaskState(taskId, taskState);
     }
 
     /**
@@ -179,7 +199,7 @@ public class TaskService {
      * @return
      */
     private long getNextTime(TaskModel taskModel) {
-        return taskModel.getExecuteTime() - (TimeUtil.getTime() - taskModel.getHeartbeatTime());
+        return taskModel.getExecuteTime() - (this.dbHelper.getTime() - taskModel.getHeartbeatTime());
     }
 
 
@@ -191,7 +211,6 @@ public class TaskService {
      */
     public ResponseStatusModel getResponseModel(String id) {
         TaskModel taskModel = this.query(id);
-//        TaskModel taskModel = this._tasks.get(id);
         if (taskModel == null) {
             return null;
         }
@@ -199,13 +218,22 @@ public class TaskService {
     }
 
 
-    @Transactional
-    public void timeOutTask() {
+    /**
+     * 执行任务
+     */
 
-        List<TaskTable> taskTables = this.taskTableDao.findTimeOutTask();
+    public void doTask() {
+        List<TaskTable> taskTables = this.findTimeOutTask();
+        if (taskTables != null && taskTables.size() > 0) {
+            for (TaskTable taskTable : taskTables) {
+                this.taskHelper.doit(taskTable.getTaskId());
+            }
+        }
+    }
 
-        System.out.println("---");
 
+    public List<TaskTable> findTimeOutTask() {
+        return this.taskTableDao.findCanDoTask();
     }
 
 }

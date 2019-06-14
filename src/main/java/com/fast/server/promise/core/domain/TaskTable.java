@@ -1,8 +1,13 @@
 package com.fast.server.promise.core.domain;
 
-import lombok.*;
-
-import javax.persistence.*;
+import com.fast.server.promise.core.type.TaskState;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 任务模型
@@ -10,43 +15,48 @@ import javax.persistence.*;
 
 @Data
 @Builder
-@Entity
-@Table(name = "taskTable", indexes = {@Index(name = "taskId", columnList = "taskId"), @Index(name = "taskTable_createTime", columnList = "createTime"), @Index(name = "taskTable_updateTime", columnList = "updateTime"), @Index(name = "taskTable_executeTime", columnList = "executeTime"), @Index(name = "taskTable_heartbeatTime", columnList = "heartbeatTime")})
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@Document
 public class TaskTable extends SuperEntity {
 
-    @Column(unique = true, nullable = true)
+    @Indexed(unique = true)
     private String taskId;
 
 
     /**
      * 执行时间
      */
-    @Column(unique = false, nullable = true)
+    @Indexed
     private Long executeTime;
 
 
     /**
      * 心跳记录时间
      */
-    @Column(unique = false, nullable = true)
+    @Indexed
     private Long heartbeatTime;
 
 
     /**
      * http的任务
      */
-    @OneToOne
+    @DBRef(lazy = true)
     private HttpTable httpTable;
 
 
     /**
      * 错误模型
      */
-    @OneToOne
+    @DBRef(lazy = true)
     private ErrorTryTable errorTryTable;
+
+
+    /**
+     * 工作状态
+     */
+    @Indexed
+    private TaskState taskState;
 
 
 }

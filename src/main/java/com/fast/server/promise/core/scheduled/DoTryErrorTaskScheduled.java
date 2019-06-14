@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 @EnableScheduling
 @Component
 @Log
-public class DoTaskScheduled {
+public class DoTryErrorTaskScheduled {
 
     @Autowired
     private TaskService taskService;
 
-    @Scheduled(cron = "0/5 * * * * ?")
-    public void doTask() {
-        this.taskService.doTask();
+    @Scheduled(cron = "0/2 * * * * ?") //每小时的33分钟开始执行，每3分钟执行1次
+    public void timeOutTask() {
+//        this.taskService.doTask();
     }
 
 }

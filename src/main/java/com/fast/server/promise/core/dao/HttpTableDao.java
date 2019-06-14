@@ -1,7 +1,7 @@
 package com.fast.server.promise.core.dao;
 
 import com.fast.server.promise.core.domain.HttpTable;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface HttpTableDao extends JpaRepository<HttpTable, Long> {
+public interface HttpTableDao extends MongoRepository<HttpTable, Long> {
 }
